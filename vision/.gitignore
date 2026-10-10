@@ -1,0 +1,3 @@
+# The TFRecord files are ~2.8 GB (train alone is 2.7 GB), which is over
+# GitHub's per-file limit, even with Git LFS. Get them from Roboflow instead (see README.md).
+*.tfrecord
