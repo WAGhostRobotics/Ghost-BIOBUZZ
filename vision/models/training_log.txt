@@ -1,0 +1,184 @@
+============================================================
+LIMELIGHT MODEL TRAINER
+============================================================
+
+Job ID: f5cbe6fa
+Spinning up 1 NVIDIA H100 GPU...
+
+Steps: 4000, Batch size: 16, Platform: coral
+
+STAGE 1/6: Downloading dataset...
+  Downloading from Google Drive...
+  Downloaded: 2548.37 MB
+  Extracting dataset...
+  Archive contains 8 files
+  Scanning for TFRecords and label map...
+    Found label map: test/FTC-BioBuzz_label_map.pbtxt
+    Found train record: train/FTC-BioBuzz.tfrecord
+    Found label map: train/FTC-BioBuzz_label_map.pbtxt
+    Found val record: valid/FTC-BioBuzz.tfrecord
+    Found label map: valid/FTC-BioBuzz_label_map.pbtxt
+
+STAGE 2/6: Loading pretrained model...
+  Pretrained model ready
+
+STAGE 3/6: Configuring training pipeline...
+  Detected 3 classes: ['blue', 'red', 'yellow']
+
+STAGE 4/6: Training model...
+----------------------------------------
+  Starting validation evaluation thread...
+  Validation thread started (will evaluate at each checkpoint)
+  Progress check #1: No loss data yet
+  Progress check #2: No loss data yet
+  Progress check #3: No loss data yet
+  Progress check #4: No loss data yet
+    Train event files: ['events.out.tfevents.1789764430.modal.2.0.v2']
+  Progress check #5: No loss data yet
+    Train event files: ['events.out.tfevents.1789764430.modal.2.0.v2']
+  TensorBoard train tags: ['train_input_images', 'steps_per_sec', 'Loss/localization_loss', 'Loss/classification_loss', 'Loss/regularization_loss', 'Loss/total_loss', 'learning_rate']
+  Step 50/4000 - Train Loss: 0.4774
+  Step 75/4000 - Train Loss: 0.4612
+  TensorBoard val tags: ['eval_side_by_side_0_0', 'eval_side_by_side_1_0', 'eval_side_by_side_2_0', 'eval_side_by_side_3_0', 'eval_side_by_side_4_0', 'eval_side_by_side_5_0', 'eval_side_by_side_6_0', 'eval_side_by_side_7_0', 'eval_side_by_side_8_0', 'eval_side_by_side_9_0']
+  Step 125/4000 - Train Loss: 0.3257 | Val: 0.8863
+  Step 150/4000 - Train Loss: 0.2231 | Val: 0.8863
+  Step 200/4000 - Train Loss: 0.1566 | Val: 0.8863
+  Step 250/4000 - Train Loss: 0.1616 | Val: 0.8863
+  Step 275/4000 - Train Loss: 0.1795 | Val: 0.8863
+  Step 325/4000 - Train Loss: 0.1746 | Val: 0.8863
+  Step 350/4000 - Train Loss: 0.1183 | Val: 0.8863
+  Step 400/4000 - Train Loss: 0.0953 | Val: 0.8863
+  Step 425/4000 - Train Loss: 0.2214 | Val: 0.8863
+  Step 475/4000 - Train Loss: 0.1606 | Val: 0.8863
+  Step 525/4000 - Train Loss: 0.1206 | Val: 0.8863
+  Step 550/4000 - Train Loss: 0.1132 | Val: 0.8863
+  Step 600/4000 - Train Loss: 0.0872 | Val: 0.8863
+  Step 625/4000 - Train Loss: 0.1399 | Val: 0.8863
+  Step 675/4000 - Train Loss: 0.1604 | Val: 0.8863
+  Step 700/4000 - Train Loss: 0.1035 | Val: 0.1476
+  Step 750/4000 - Train Loss: 0.1178 | Val: 0.1476
+  Step 800/4000 - Train Loss: 0.0662 | Val: 0.1476
+  Step 825/4000 - Train Loss: 0.1186 | Val: 0.1476
+  Step 875/4000 - Train Loss: 0.0520 | Val: 0.1476
+  Step 900/4000 - Train Loss: 0.1184 | Val: 0.1476
+  Step 950/4000 - Train Loss: 0.1908 | Val: 0.1476
+  Step 975/4000 - Train Loss: 0.0960 | Val: 0.1476
+  Step 1025/4000 - Train Loss: 0.1081 | Val: 0.1476
+  Step 1075/4000 - Train Loss: 0.0874 | Val: 0.1476
+  Step 1100/4000 - Train Loss: 0.1216 | Val: 0.1476
+  Step 1150/4000 - Train Loss: 0.0664 | Val: 0.1476
+  Step 1175/4000 - Train Loss: 0.0521 | Val: 0.1476
+  Step 1225/4000 - Train Loss: 0.1015 | Val: 0.1174
+  Step 1250/4000 - Train Loss: 0.0780 | Val: 0.1174
+  Step 1300/4000 - Train Loss: 0.0930 | Val: 0.1174
+  Step 1350/4000 - Train Loss: 0.0928 | Val: 0.1174
+  Step 1375/4000 - Train Loss: 0.1138 | Val: 0.1174
+  Step 1425/4000 - Train Loss: 0.0989 | Val: 0.1174
+  Step 1450/4000 - Train Loss: 0.0868 | Val: 0.1174
+  Step 1500/4000 - Train Loss: 0.1154 | Val: 0.1174
+  Step 1525/4000 - Train Loss: 0.0421 | Val: 0.1174
+  Step 1575/4000 - Train Loss: 0.0432 | Val: 0.1174
+  Step 1625/4000 - Train Loss: 0.1288 | Val: 0.1174
+  Step 1650/4000 - Train Loss: 0.0881 | Val: 0.1174
+  Step 1700/4000 - Train Loss: 0.0604 | Val: 0.1015
+  Step 1725/4000 - Train Loss: 0.0945 | Val: 0.1015
+  Step 1775/4000 - Train Loss: 0.1195 | Val: 0.1015
+  Step 1800/4000 - Train Loss: 0.0819 | Val: 0.1015
+  Step 1850/4000 - Train Loss: 0.0667 | Val: 0.1015
+  Step 1900/4000 - Train Loss: 0.0647 | Val: 0.1015
+  Step 1925/4000 - Train Loss: 0.1334 | Val: 0.1015
+  Step 1975/4000 - Train Loss: 0.1363 | Val: 0.1015
+  Step 2000/4000 - Train Loss: 0.0988 | Val: 0.1015
+  Step 2050/4000 - Train Loss: 0.0768 | Val: 0.1015
+  Step 2075/4000 - Train Loss: 0.0736 | Val: 0.1015
+  Step 2125/4000 - Train Loss: 0.1480 | Val: 0.1015
+  Step 2175/4000 - Train Loss: 0.0709 | Val: 0.1015
+  Step 2200/4000 - Train Loss: 0.0801 | Val: 0.0966
+  Step 2250/4000 - Train Loss: 0.0940 | Val: 0.0966
+  Step 2275/4000 - Train Loss: 0.0535 | Val: 0.0966
+  Step 2325/4000 - Train Loss: 0.0800 | Val: 0.0966
+  Step 2350/4000 - Train Loss: 0.0610 | Val: 0.0966
+  Step 2400/4000 - Train Loss: 0.0929 | Val: 0.0966
+  Step 2450/4000 - Train Loss: 0.1253 | Val: 0.0966
+  Step 2475/4000 - Train Loss: 0.0729 | Val: 0.0966
+  Step 2525/4000 - Train Loss: 0.0756 | Val: 0.0966
+  Step 2550/4000 - Train Loss: 0.1389 | Val: 0.0966
+  Step 2600/4000 - Train Loss: 0.0650 | Val: 0.0966
+  Step 2625/4000 - Train Loss: 0.0962 | Val: 0.0966
+  Step 2675/4000 - Train Loss: 0.0703 | Val: 0.0966
+  Step 2725/4000 - Train Loss: 0.1006 | Val: 0.0896
+  Step 2750/4000 - Train Loss: 0.1270 | Val: 0.0896
+  Step 2800/4000 - Train Loss: 0.0778 | Val: 0.0896
+  Step 2825/4000 - Train Loss: 0.1242 | Val: 0.0896
+  Step 2875/4000 - Train Loss: 0.0741 | Val: 0.0896
+  Step 2900/4000 - Train Loss: 0.0981 | Val: 0.0896
+  Step 2950/4000 - Train Loss: 0.0903 | Val: 0.0896
+  Step 3000/4000 - Train Loss: 0.1520 | Val: 0.0896
+  Step 3025/4000 - Train Loss: 0.0739 | Val: 0.0896
+  Step 3075/4000 - Train Loss: 0.0280 | Val: 0.0896
+  Step 3100/4000 - Train Loss: 0.0900 | Val: 0.0896
+  Step 3150/4000 - Train Loss: 0.0654 | Val: 0.0896
+  Step 3175/4000 - Train Loss: 0.0656 | Val: 0.0896
+  Step 3225/4000 - Train Loss: 0.0870 | Val: 0.0894
+  Step 3275/4000 - Train Loss: 0.0525 | Val: 0.0894
+  Step 3300/4000 - Train Loss: 0.1046 | Val: 0.0894
+  Step 3350/4000 - Train Loss: 0.0672 | Val: 0.0894
+  Step 3375/4000 - Train Loss: 0.0416 | Val: 0.0894
+  Step 3425/4000 - Train Loss: 0.0370 | Val: 0.0894
+  Step 3450/4000 - Train Loss: 0.0446 | Val: 0.0894
+  Step 3500/4000 - Train Loss: 0.0737 | Val: 0.0894
+  Step 3550/4000 - Train Loss: 0.0615 | Val: 0.0894
+  Step 3575/4000 - Train Loss: 0.0977 | Val: 0.0894
+  Step 3625/4000 - Train Loss: 0.0966 | Val: 0.0894
+  Step 3650/4000 - Train Loss: 0.0530 | Val: 0.0894
+  Step 3700/4000 - Train Loss: 0.0705 | Val: 0.0894
+  Step 3725/4000 - Train Loss: 0.0800 | Val: 0.0875
+  Step 3775/4000 - Train Loss: 0.1096 | Val: 0.0875
+  Step 3825/4000 - Train Loss: 0.0553 | Val: 0.0875
+  Step 3850/4000 - Train Loss: 0.0858 | Val: 0.0875
+  Step 3900/4000 - Train Loss: 0.0875 | Val: 0.0875
+  Step 3925/4000 - Train Loss: 0.1153 | Val: 0.0875
+  Step 3975/4000 - Train Loss: 0.0476 | Val: 0.0875
+  Step 4000/4000 - Train Loss: 0.0617 | Val: 0.0875
+  Waiting for final validation evaluation...
+  Eval thread completed normally
+----------------------------------------
+Training complete
+
+  Extracting training metrics...
+  Captured 160 training loss values
+  Captured 8 validation loss values
+  Training loss progression:
+    Step     25: 0.6460
+    Step   1025: 0.1081
+    Step   2025: 0.1448
+    Step   3025: 0.0739
+    Step   4000: 0.0617
+  Minimum training loss: 0.0280 at step 3075
+STAGE 5/6: Exporting model...
+  Exported to: /tmp/limelight_train_wrw7am10/exported/saved_model
+  Converting to float TFLite...
+
+STAGE 6/6: Quantizing and compiling...
+  Extracting calibration images from training data...
+  Extracted 100 calibration images
+  Found 100 sample images for quantization
+  Inspecting saved model...
+  Model output 0: shape=[ 1 10], dtype=<class 'numpy.float32'>
+  Model output 1: shape=[ 1 10  4], dtype=<class 'numpy.float32'>
+  Model output 2: shape=[1], dtype=<class 'numpy.float32'>
+  Model output 3: shape=[ 1 10], dtype=<class 'numpy.float32'>
+  Running INT8 quantization...
+  INT8 quantization successful!
+  INT8 model: 4.99 MB
+  Compiling for Coral EdgeTPU...
+  Coral model: 5.28 MB
+
+============================================================
+TRAINING COMPLETE
+============================================================
+  Generating training loss graph...
+    Training loss range: 0.0280 to 0.6460
+    Validation loss range: 0.0875 to 0.8863
+  Loss graph generated (133.3 KB)
+  Saving results to storage...
