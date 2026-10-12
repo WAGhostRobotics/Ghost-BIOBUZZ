@@ -15,7 +15,7 @@ public class Shooter {
 
     DcMotorEx shooterL, shooterR;
     Servo gateL, gateR, hood;
-    double openGateL = .4, openGateR = 0.6, closeGateL = 0.3278, closeGateR = 0.69;
+    double openGateL = .4, openGateR = 0.5, closeGateL = 0.3278, closeGateR = 0.73; // TODO: change gateR positions
     double P, I, D, F;
     double currentVelocity;
     double targetVelocity;
@@ -32,9 +32,6 @@ public class Shooter {
         gateR = h.get(Servo.class, "gateR");
 
         hood = h.get(Servo.class, "hood");
-
-        gateL.setPosition(closeGateL);
-        gateL.setPosition(closeGateR);
 
         shooterR.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -85,6 +82,11 @@ public class Shooter {
 
         power = Range.clip(power, -1, 1);
 
+        shooterL.setPower(power);
+        shooterR.setPower(power);
+    }
+
+    public void setShooterPower(double power) {
         shooterL.setPower(power);
         shooterR.setPower(power);
     }

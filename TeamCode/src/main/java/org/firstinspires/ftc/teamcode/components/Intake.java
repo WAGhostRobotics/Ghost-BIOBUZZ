@@ -18,8 +18,6 @@ public class Intake {
 
         polliRoller = h.get(Servo.class,"polliRoller");
 
-        polliRoller.setPosition(polliUp);
-
         intake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 

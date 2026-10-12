@@ -1,4 +1,4 @@
-/**package org.firstinspires.ftc.teamcode.pedro;
+package org.firstinspires.ftc.teamcode.pedro;
 
 import com.pedropathing.algorithm.Foresight;
 import com.pedropathing.revhub.drivetrains.Mecanum;
@@ -34,4 +34,3 @@ public class Tuning {
         return new Tests(hardwareMap -> new Mecanum(hardwareMap, Constants.drivetrainConfig), (hardwareMap -> new PinpointLocalizer(hardwareMap, Constants.localizerConfig)), () -> new Foresight(Constants.foresightConfig));
     }
 }
- **/

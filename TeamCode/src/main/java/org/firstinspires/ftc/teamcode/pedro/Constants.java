@@ -70,6 +70,8 @@ public class Constants {
                 c.maxAchievableStrafeVelocity.set(69.73579900730213);
                 c.naturalForwardDeceleration.set(35.02438127017048);
                 c.naturalStrafeDeceleration.set(69.30580864310332);
+
+                c.brakeAggression.set(1.2); // makes the autos overshoot a little
             }
     );
 
