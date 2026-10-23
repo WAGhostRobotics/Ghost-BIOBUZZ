@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.components;
+package org.firstinspires.ftc.teamcode.subsystems;
 
 
 import com.arcrobotics.ftclib.controller.PIDFController;
@@ -15,10 +15,13 @@ public class Shooter {
 
     DcMotorEx shooterL, shooterR;
     Servo gateL, gateR, hood;
-    double openGateL = .4, openGateR = 0.5, closeGateL = 0.3278, closeGateR = 0.73; // TODO: change gateR positions
-    double P, I, D, F;
-    double currentVelocity;
-    double targetVelocity;
+
+    private final double SHOOT_POWER = 0.62;
+    private final double IDLE_HOOD_POS = 0.3;
+    private final double openGateL = 0.4, openGateR = 0.5, closeGateL = 0.3278, closeGateR = 0.73; // TODO: change gateR positions
+    public double P, I, D, F;
+    public double currentVelocity;
+    public double targetVelocity;
     public double shooterError;
     public double power;
     PIDFController shooterPID;
@@ -66,13 +69,9 @@ public class Shooter {
         shooterPID.setPIDF(P,I,D,F);
     }
 
-    public double getCurrentVelocity(){
-        return shooterL.getVelocity();
-    }
+    public double getCurrentVelocity(){ return shooterL.getVelocity(); }
 
-    public void setTargetVelocity(double tarV) {
-        targetVelocity = tarV;
-    }
+    public void setTargetVelocity(double tarV) { targetVelocity = tarV; }
 
     public void shooterUpdate(){
         currentVelocity = shooterL.getVelocity(AngleUnit.DEGREES);
@@ -91,7 +90,9 @@ public class Shooter {
         shooterR.setPower(power);
     }
 
-    public void setHoodPos(double pos) {
-        hood.setPosition(pos);
-    }
+    public void setHoodPos(double pos) { hood.setPosition(pos); }
+
+    public void spinUp() { setShooterPower(SHOOT_POWER); }
+    public void stopShooter() { setShooterPower(0); }
+    public void setIdleHood() { hood.setPosition(IDLE_HOOD_POS); }
 }
