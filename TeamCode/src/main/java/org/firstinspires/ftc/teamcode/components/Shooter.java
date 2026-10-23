@@ -94,4 +94,5 @@ public class Shooter {
     public void setHoodPos(double pos) {
         hood.setPosition(pos);
     }
+    public double getHoodPos() {return hood.getPosition();}
 }
