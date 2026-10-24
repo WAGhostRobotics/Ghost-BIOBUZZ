@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.alignment;
+package org.firstinspires.ftc.teamcode.testing;
 
 import com.pedropathing.drivetrain.DrivePowers;
 import com.pedropathing.follower.Follower;
@@ -7,6 +7,8 @@ import com.pedropathing.math.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.alignment.AlignPID;
+import org.firstinspires.ftc.teamcode.alignment.FieldConstants;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 @TeleOp(name="align test op")
@@ -21,7 +23,7 @@ public class AlignTestOp extends LinearOpMode {
 
         Pose startPose = new Pose(135,135,Math.toRadians(270));
 
-        //if previous_pose != null then .setPose(previous_pose) else startPose
+//        if previous_pose != null then .setPose(previous_pose) else startPose
         f.setPose(startPose);
 
         align = new AlignPID(FieldConstants.hive(alliance,aimHiveA));

@@ -10,7 +10,7 @@ public class Intake {
 
     DcMotor intake, transfer;
     Servo polliRoller;
-    public double polliUp, polliMid, polliDown; // TODO: set up positions
+    public double polliUp = .74, polliDown = .31;
 
     public Intake(HardwareMap h) {
         intake = h.get(DcMotorEx.class, "intake");
@@ -21,8 +21,6 @@ public class Intake {
         intake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        intake.setDirection(DcMotorSimple.Direction.REVERSE);
-
         transfer.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         transfer.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
@@ -31,10 +29,6 @@ public class Intake {
 
     public void setPolliUp() {
         polliRoller.setPosition(polliUp);
-    }
-
-    public void setPolliMid() {
-        polliRoller.setPosition(polliMid);
     }
 
     public void setPolliDown() {

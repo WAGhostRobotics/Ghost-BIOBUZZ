@@ -26,13 +26,10 @@ public class ShooterSpeedTest extends OpMode {
         Charlie.shooter.setShooterPower(power);
         Charlie.shooter.setHoodPos(hoodpos);
         Charlie.intake.setIntakeSpeed(0.8);
-        Charlie.intake.setTransferSpeed(0.8);
+        Charlie.intake.setTransferSpeed(0.6);
 
         telemetry.addData("power: ", power);
         telemetry.addData("hood pos: ", hoodpos);
-        telemetry.addData("X", follower.pose().x());
-        telemetry.addData("Y", follower.pose().y());
-        telemetry.addData("Heading", Math.toDegrees(follower.pose().heading()));
 
         telemetry.update();
     }

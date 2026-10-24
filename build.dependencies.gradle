@@ -19,7 +19,7 @@ dependencies {
 //    implementation 'com.acmerobotics.dashboard:dashboard:0.6.0' --> using sloth dash now; look at team code build gradle
     // https://github.com/Dairy-Foundation/Sloth#gradle-tasks
 
-    implementation 'com.pedropathing:revhub:3.0.1'
+    implementation 'com.pedropathing:revhub:3.0.2'
     implementation 'com.pedropathing:tuning:1.0.0'
     implementation 'com.pedropathing.ivy:pedro:1.1.1'
 }
