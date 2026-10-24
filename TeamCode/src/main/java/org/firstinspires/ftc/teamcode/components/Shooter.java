@@ -15,8 +15,8 @@ public class Shooter {
 
     DcMotorEx shooterL, shooterR;
     Servo gateL, gateR, hood;
-    double openGateL = .4, openGateR = 0.5, closeGateL = 0.3278, closeGateR = 0.73; // TODO: change gateR positions
-    double P, I, D, F;
+    double openGateL = .5, openGateR = 0.5, closeGateL = 0.34, closeGateR = 0.75;
+    double P = 0.0055 , I=0.0006 , D=0, F=0.009;
     double currentVelocity;
     double targetVelocity;
     public double shooterError;
@@ -67,15 +67,15 @@ public class Shooter {
     }
 
     public double getCurrentVelocity(){
-        return shooterL.getVelocity();
-    }
 
+        return shooterR.getVelocity();
+    }
     public void setTargetVelocity(double tarV) {
         targetVelocity = tarV;
     }
 
     public void shooterUpdate(){
-        currentVelocity = shooterL.getVelocity(AngleUnit.DEGREES);
+        currentVelocity = shooterR.getVelocity();
         shooterError = targetVelocity - currentVelocity;
 
         power = shooterPID.calculate(0,shooterError);
