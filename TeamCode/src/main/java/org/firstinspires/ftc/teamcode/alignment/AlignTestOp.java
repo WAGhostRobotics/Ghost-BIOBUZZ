@@ -14,12 +14,12 @@ public class AlignTestOp extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         Follower f = Constants.create(hardwareMap);
-        FieldConstants.Alliance alliance = FieldConstants.Alliance.RED; //change
+        FieldConstants.Alliance alliance = FieldConstants.Alliance.BLUE; //change
         AlignPID align;
         boolean aimHiveA = true;
         boolean wasAiming = false;
 
-        Pose startPose = new Pose(0,0,0);
+        Pose startPose = new Pose(135,135,Math.toRadians(270));
 
         //if previous_pose != null then .setPose(previous_pose) else startPose
         f.setPose(startPose);
@@ -55,6 +55,9 @@ public class AlignTestOp extends LinearOpMode {
 
             telemetry.addData("Pose", "x %.4f  y %.4f  h %.4f°", p.x(), p.y(), Math.toDegrees(p.heading()));
             telemetry.addData("Target", "%s cell %s", alliance, aimHiveA ? "A" : "B");
+            telemetry.addData("Error to target", align.headingError(f.pose()));
+            telemetry.update();
+
         }
     }
 }
