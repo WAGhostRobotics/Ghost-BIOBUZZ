@@ -6,10 +6,10 @@ public class FieldConstants {
     private FieldConstants() {};
 
     public enum Alliance {BLUE, RED};
-    public static Vector2D BLUE_HIVE_A = Vector2D.cartesian(84.74,58.31);
-    public static Vector2D BLUE_HIVE_B = Vector2D.cartesian(84.74,77.80);
-    public static Vector2D RED_HIVE_A  = Vector2D.cartesian(58.31,58.31);
-    public static Vector2D RED_HIVE_B  = Vector2D.cartesian(58.31,77.80);
+    public static Vector2D BLUE_HIVE_A = Vector2D.cartesian(84.27,58.24);
+    public static Vector2D BLUE_HIVE_B = Vector2D.cartesian(84.27,79.85);
+    public static Vector2D RED_HIVE_A  = Vector2D.cartesian(58.68,59.69);
+    public static Vector2D RED_HIVE_B  = Vector2D.cartesian(57.95,85.29);
 
     public static Vector2D hive(Alliance alliance, boolean hiveA) {
         if (alliance == Alliance.BLUE){

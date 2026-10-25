@@ -25,7 +25,7 @@ public class Main extends OpMode {
     double hoodpos = 0.25;
 
     public static boolean blue = false;
-    double targetVelocity = 1355;
+    double targetVelocity = 1370;
     double P = 0.0055 , I=0.0006 , D=0, F=0.009;
 
     boolean polliDown = false;
@@ -33,6 +33,10 @@ public class Main extends OpMode {
     ToggleButtonReader polliButton, headingReset, autoHeading;
 
     public static Pose startPose;
+
+    AlignPID align;
+    FieldConstants.Alliance alliance;
+    boolean aimHiveA = true, wasShooting = false;
 
     @Override
     public void init() {
@@ -49,17 +53,28 @@ public class Main extends OpMode {
         headingReset = new ToggleButtonReader(new GamepadEx(gamepad1), GamepadKeys.Button.B);
         autoHeading = new ToggleButtonReader(new GamepadEx(gamepad1), GamepadKeys.Button.DPAD_LEFT);
 
+        alliance = blue ? FieldConstants.Alliance.BLUE : FieldConstants.Alliance.RED;
+        align = new AlignPID(FieldConstants.hive(alliance, aimHiveA));
+
     }
 
     @Override
     public void loop() {
 
-        DrivePowers powers = ManualDrive.fieldCentric(
-                -gamepad1.left_stick_y,
-                -gamepad1.left_stick_x,
-                -gamepad1.right_stick_x,
-                follower.pose().heading()
-        );
+        if (gamepad1.dpad_left) aimHiveA = true;
+        if (gamepad1.dpad_right) aimHiveA = false;
+        align.setTarget(FieldConstants.hive(alliance, aimHiveA));
+
+        DrivePowers robotRel = new DrivePowers(-gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x);
+        DrivePowers powers = ManualDrive.fieldCentric(robotRel, follower.pose().heading(), -FieldConstants.driverForward(alliance));
+
+        // while shooting (both triggers), the robot turns itself to face the goal
+        boolean shooting = gamepad1.right_trigger > 0.02 && gamepad1.left_trigger > 0.02;
+        if (shooting) {
+            if (!wasShooting) align.reset();
+            powers = align.aim(follower, powers);
+        }
+        wasShooting = shooting;
 
         follower.manual(powers);
         follower.update();
@@ -72,6 +87,8 @@ public class Main extends OpMode {
         }
 
         Pose robotPose = follower.pose();
+
+        headingReset.readValue();
 
         if(gamepad1.left_trigger > 0.02) {
             intake.setIntakeSpeed(0.8);
