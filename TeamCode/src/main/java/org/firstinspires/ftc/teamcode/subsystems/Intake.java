@@ -23,8 +23,6 @@ public class Intake {
         intakeMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         intakeMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
-        intakeMotor.setDirection(DcMotorEx.Direction.REVERSE);
-
         transferMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         transferMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 

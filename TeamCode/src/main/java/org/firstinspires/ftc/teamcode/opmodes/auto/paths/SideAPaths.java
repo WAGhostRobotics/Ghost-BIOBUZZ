@@ -16,15 +16,16 @@ public class SideAPaths implements AutoPaths{
     private final Pose flowerBackupStart = poseFactory.of(47.1795, 132.4782, 90);
     private final Pose flowerBackup = poseFactory.of(43.4954, 123.2726, 381);
     private final Pose flowerBackupControl1 = poseFactory.of(37.7525, 130.7406, 0);
-    private final Pose flowerShoot = poseFactory.of(43.5, 123.2726, 300);
-    private final Pose flower2Start = poseFactory.of(43.5, 123.2726, 300);
+    private final Pose flowerShootStart = poseFactory.of(43.4954, 123.2726, 381);
+    private final Pose flowerShoot = poseFactory.of(41.5397, 14.2071, 56);
+    private final Pose flowerShootControl1 = poseFactory.of(1.2689, 74.4446, 0);
+    private final Pose flower2Start = poseFactory.of(41.5397, 14.2071, 56);
     private final Pose flower2 = poseFactory.of(11.6483, 46.9769, 180);
-    private final Pose flower2Control1 = poseFactory.of(20.636, 88.7034, 0);
-    private final Pose flower2Control2 = poseFactory.of(31.4068, 26.5164, 0);
+    private final Pose flower2Control1 = poseFactory.of(31.1505, 49.6751, 0);
     private final Pose flower2shotStart = poseFactory.of(11.6483, 46.9769, 180);
-    private final Pose flower2shot = poseFactory.of(44.8634, 26.8419, 56);
+    private final Pose flower2shot = poseFactory.of(41.2991, 14.1889, 56);
     private final Pose flower2shotControl1 = poseFactory.of(24.2286, 30.6448, 0);
-    private final Pose parkStart = poseFactory.of(44.8634, 26.8419, 56);
+    private final Pose parkStart = poseFactory.of(41.2991, 14.1889, 56);
     private final Pose park = poseFactory.of(15.4861, 90.8797, 0);
     private final Pose parkControl1 = poseFactory.of(9.9137, 62.5359, 0);
 
@@ -47,11 +48,11 @@ public class SideAPaths implements AutoPaths{
     }
     @Override
     public Path flowerShoot() {
-        return Paths.line(flowerBackup, flowerShoot).constant(flowerShoot);
+        return Paths.curve(flowerShootStart, flowerShootControl1, flowerShoot).linear(flowerShootStart, flowerShoot);
     }
     @Override
     public Path flower2() {
-        return Paths.curve(flower2Start, flower2Control1, flower2Control2, flower2).linear(flower2Start, flower2);
+        return Paths.curve(flower2Start, flower2Control1, flower2).linear(flower2Start, flower2);
     }
     @Override
     public Path flower2shot() {

@@ -67,7 +67,7 @@ public class Shooter {
         shooterPID.setPIDF(P,I,D,F);
     }
 
-    public double getCurrentVelocity(){ return shooterL.getVelocity(); }
+    public double getCurrentVelocity(){ return shooterR.getVelocity(); }
     public void setTargetVelocity(double tarV) { targetVelocity = tarV; }
 
     public double getHoodPos() { return hood.getPosition(); }
