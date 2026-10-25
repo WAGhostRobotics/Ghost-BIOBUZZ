@@ -9,12 +9,21 @@ import com.pedropathing.math.Pose;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Vision {
 
     public Limelight3A limelight;
 
     public double MAX_SHOOTING_DISTANCE = 70.0;
     public double MAX_LATERAL_OFFSET = 20.0;
+
+    static final double CAM_HEIGHT = 0;
+    static final double BALL_HEIGHT = 1.4;
+    static final double CAM_PITCH = 0;
+    static final double CAM_X_OFFSET = 0;
+    static final double CAM_Y_OFFSET = 0;
 
     public enum TargetState {
         A_UP_IN_RANGE, B_UP_IN_RANGE,
@@ -24,7 +33,7 @@ public class Vision {
 
     public Vision(HardwareMap hwMap) {
         limelight = hwMap.get(Limelight3A.class, "limelight");
-        limelight.pipelineSwitch(0);
+        limelight.pipelineSwitch(1);
         limelight.setPollRateHz(100);
         limelight.start();
     }
@@ -101,6 +110,37 @@ public class Vision {
         }
         return null;
     }
+
+    public List<Pose> getYellowBalls(LLResult result, Pose robotPose) {
+        List<Pose> yellowBalls = new ArrayList<>();
+        if (result == null || !result.isValid()) return yellowBalls;
+
+        for (LLResultTypes.DetectorResult d : result.getDetectorResults()) {
+            if (!d.getClassName().equalsIgnoreCase("yellow")) continue;
+
+            double tx = d.getTargetXDegrees();
+            double ty = d.getTargetYDegrees();
+
+            double angle = Math.toRadians(CAM_PITCH + ty);
+            double forward = (BALL_HEIGHT - CAM_HEIGHT) / Math.tan(angle);
+
+            double left = forward * Math.tan(Math.toRadians(-tx));
+
+            double robotX = forward + CAM_X_OFFSET;
+            double robotY = left + CAM_Y_OFFSET;
+
+            double h = robotPose.heading();
+            double fieldX = robotPose.x() + robotX * Math.cos(h) - robotY * Math.sin(h);
+            double fieldY = robotPose.y() + robotX * Math.sin(h) + robotY * Math.cos(h);
+
+            double headingToBall = Math.atan2(fieldY - robotPose.y(), fieldX - robotPose.x());
+
+            yellowBalls.add(new Pose(fieldX, fieldY, headingToBall));
+        }
+        return yellowBalls;
+    }
+
+
 
     public void stop() {
         limelight.stop();
