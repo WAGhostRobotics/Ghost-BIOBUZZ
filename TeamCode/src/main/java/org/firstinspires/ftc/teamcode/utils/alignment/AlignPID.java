@@ -34,27 +34,27 @@ public class AlignPID {
         return target;
     }
 
-    public DrivePowers aim(Follower f, DrivePowers translation) {
+    public DrivePowers aim(Follower f, DrivePowers translation){
         Pose p = f.pose();
         double dx = target.x() - p.x();
         double dy = target.y() - p.y();
-        double targetHeading = Angle.normalize(Math.atan2(dy, dx));
+        double targetHeading = Angle.normalize(Math.atan2(dy,dx));
         double error = Angle.normalizeSigned(targetHeading - p.heading());
         double angvel = f.velocity().omega;
 
         double turn = pid.calculate(0, error, angvel);
-        if (Math.abs(error) > Math.toRadians(tolerance)) {
+        if (Math.abs(error) > Math.toRadians(tolerance)){
             turn += kS * Math.signum(error);
         }
         return new DrivePowers(translation.forward(), translation.strafe(), turn);
     }
 
+    public void reset(){
+        pid.reset();
+    }
+
     public DrivePowers autoAim(Follower f, DrivePowers translation, FieldConstants.Alliance alliance, boolean aimHiveA) {
         setTarget(FieldConstants.hive(alliance, aimHiveA)); //update
         return aim(f, translation); //calc pose
-    }
-
-    public void reset(){
-        pid.reset();
     }
 }

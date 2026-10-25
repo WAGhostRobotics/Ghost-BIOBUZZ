@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.utils;
 
+import com.pedropathing.api.PoseFactory;
+import com.pedropathing.math.Pose;
 import com.pedropathing.math.Vector2D;
 
 public class FieldConstants {
@@ -24,5 +26,5 @@ public class FieldConstants {
         return alliance == Alliance.BLUE ? BLUE_DRIVER_FORWARD : RED_DRIVER_FORWARD;
     }
 
-
+    public static Pose endAutoPose = PoseFactory.degrees().of(15.4861, 90.8797, 0);
 }

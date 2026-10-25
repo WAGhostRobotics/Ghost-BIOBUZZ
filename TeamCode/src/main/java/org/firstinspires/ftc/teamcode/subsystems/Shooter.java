@@ -16,10 +16,10 @@ public class Shooter {
     DcMotorEx shooterL, shooterR;
     Servo gateL, gateR, hood;
 
-    private final double SHOOT_POWER = 0.62;
-    private final double IDLE_HOOD_POS = 0.3;
-    private final double openGateL = 0.4, openGateR = 0.5, closeGateL = 0.3278, closeGateR = 0.73; // TODO: change gateR positions
-    public double P, I, D, F;
+    private final double SHOOT_POWER = 0.64;
+    private final double IDLE_HOOD_POS = 0.23;
+    double OPEN_GATE_L = .5, OPEN_GATE_R = 0.5, CLOSE_GATE_L = 0.34, CLOSE_GATE_R = 0.75;
+    double P = 0.0055 , I = 0.0006 , D = 0, F = 0.009;
     public double currentVelocity;
     public double targetVelocity;
     public double shooterError;
@@ -51,13 +51,13 @@ public class Shooter {
     }
 
     public void openGates() {
-        gateL.setPosition(openGateL);
-        gateR.setPosition(openGateR);
+        gateL.setPosition(OPEN_GATE_L);
+        gateR.setPosition(OPEN_GATE_R);
     }
 
     public void closeGates() {
-        gateL.setPosition(closeGateL);
-        gateR.setPosition(closeGateR);
+        gateL.setPosition(CLOSE_GATE_L);
+        gateR.setPosition(CLOSE_GATE_R);
     }
 
     public void setPIDF(double kP, double kI, double kD, double kF){
@@ -70,8 +70,9 @@ public class Shooter {
     }
 
     public double getCurrentVelocity(){ return shooterL.getVelocity(); }
-
     public void setTargetVelocity(double tarV) { targetVelocity = tarV; }
+
+    public double getHoodPos() { return hood.getPosition(); }
 
     public void shooterUpdate(){
         currentVelocity = shooterL.getVelocity(AngleUnit.DEGREES);

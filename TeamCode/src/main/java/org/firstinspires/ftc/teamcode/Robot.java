@@ -15,10 +15,15 @@ public class Robot {
     public  Follower follower;
     public Vision vision;
 
+    public static boolean visionEnabled = false;
+
     public Robot(HardwareMap hardwareMap) {
         follower = Constants.create(hardwareMap);
         intake = new Intake(hardwareMap);
         shooter = new Shooter(hardwareMap);
-        vision = new Vision(hardwareMap);
+
+        if (Robot.visionEnabled) {
+            vision = new Vision(hardwareMap);
+        }
     }
 }

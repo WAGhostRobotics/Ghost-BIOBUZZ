@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.opmodes;
 
+import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
+import com.arcrobotics.ftclib.gamepad.ToggleButtonReader;
 import com.pedropathing.drivetrain.DrivePowers;
 import com.pedropathing.follower.ManualDrive;
 import com.pedropathing.math.Pose;
@@ -13,18 +16,22 @@ import org.firstinspires.ftc.teamcode.subsystems.Vision;
 
 public abstract class BaseTeleop extends OpMode {
 
+    //charlie
     protected Robot charlie;
     protected FieldConstants.Alliance alliance;
 
-    // Arrays renamed to match A and B sides
-    protected int[] tagsA;
-    protected int[] tagsB;
-
-    private final double FIELD_CENTER_Y = 72.0; //assume center is at 72
-
-    protected AlignPID alignPID;
+    //vision
+    protected int[] tagsA, tagsB;
+    private final double FIELD_CENTER_Y = 72.0;
     protected boolean wasAiming = false;
+
+    //pid
+    protected AlignPID alignPID;
     protected DrivePowers powers;
+
+    //controls
+    private boolean polliDown = false;
+    ToggleButtonReader polliButton, headingReset;
 
     @Override
     public void init() {
@@ -34,7 +41,13 @@ public abstract class BaseTeleop extends OpMode {
         charlie.intake.setPolliUp();
         charlie.shooter.setIdleHood();
 
+        polliButton = new ToggleButtonReader(new GamepadEx(gamepad1), GamepadKeys.Button.A);
+        headingReset = new ToggleButtonReader(new GamepadEx(gamepad1), GamepadKeys.Button.B);
+
         alignPID = new AlignPID(Vector2D.cartesian(0, 0));
+
+        //update from teleop
+        charlie.follower.setPose(FieldConstants.endAutoPose);
     }
 
     protected void handleAlignmentAndShooting() {
@@ -95,19 +108,34 @@ public abstract class BaseTeleop extends OpMode {
                 charlie.follower.pose().heading()
         );
 
-        //update based on camera vision
-        handleAlignmentAndShooting();
+        if (Robot.visionEnabled) {
+            //update based on camera vision
+            handleAlignmentAndShooting();
+        }
 
         //update drivetrain
         ManualDrive.driveOrHold(charlie.follower, powers);
         charlie.follower.update();
 
-        //other subsystems
+        //intake
         if (gamepad1.left_trigger > 0.02) charlie.intake.startIntake();
-        else charlie.intake.stopIntake();
+        else charlie.intake.idleIntake();
 
+        //transfer
         if (gamepad1.right_trigger > 0.2)  charlie.intake.startTransfer();
         else charlie.intake.stopTransfer();
+
+        //polli
+        if (polliButton.wasJustPressed()) {
+            if (polliDown) { charlie.intake.setPolliUp(); }
+            else { charlie.intake.setPolliDown(); }
+
+            polliDown = !polliDown;
+        }
+
+        //shooter
+        if (gamepad1.right_trigger > 0.02 && gamepad1.left_trigger > 0.02) { charlie.shooter.openGates(); }
+        else { charlie.shooter.closeGates(); }
 
         charlie.shooter.spinUp();
     }
