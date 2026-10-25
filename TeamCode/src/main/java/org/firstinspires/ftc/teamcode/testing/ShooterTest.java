@@ -25,14 +25,25 @@ public class ShooterTest extends OpMode {
 
     @Override
     public void init() {
+
         Charlie.init(hardwareMap);
+        shooter.closeGates();
     }
 
     @Override
     public void loop() {
 
+        if(gamepad1.left_trigger_pressed){
+            intake.setTransferSpeed(transferSpeed);
+            shooter.openGates();
+        }
+        else {
+            intake.setTransferSpeed(0);
+            shooter.closeGates();
+        }
+
         intake.setIntakeSpeed(0.8);
-        intake.setTransferSpeed(transferSpeed);
+
 
         shooter.setHoodPos(hoodPos);
 
