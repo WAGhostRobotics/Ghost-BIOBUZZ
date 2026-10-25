@@ -25,7 +25,7 @@ public class Main extends OpMode {
     double hoodpos = 0.25;
 
     public static boolean blue = false;
-    double targetVelocity = 1370;
+    double targetVelocity = 1360;
     double P = 0.0055 , I=0.0006 , D=0, F=0.009;
 
     boolean polliDown = false;
@@ -36,7 +36,7 @@ public class Main extends OpMode {
 
     AlignPID align;
     FieldConstants.Alliance alliance;
-    boolean aimHiveA = true, wasShooting = false;
+    boolean wasAiming = false;
 
     @Override
     public void init() {
@@ -54,27 +54,29 @@ public class Main extends OpMode {
         autoHeading = new ToggleButtonReader(new GamepadEx(gamepad1), GamepadKeys.Button.DPAD_LEFT);
 
         alliance = blue ? FieldConstants.Alliance.BLUE : FieldConstants.Alliance.RED;
-        align = new AlignPID(FieldConstants.hive(alliance, aimHiveA));
+        align = new AlignPID(FieldConstants.hive(alliance, true));
 
     }
 
     @Override
     public void loop() {
 
-        if (gamepad1.dpad_left) aimHiveA = true;
-        if (gamepad1.dpad_right) aimHiveA = false;
-        align.setTarget(FieldConstants.hive(alliance, aimHiveA));
+
 
         DrivePowers robotRel = new DrivePowers(-gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x);
         DrivePowers powers = ManualDrive.fieldCentric(robotRel, follower.pose().heading(), -FieldConstants.driverForward(alliance));
 
-        // while shooting (both triggers), the robot turns itself to face the goal
-        boolean shooting = gamepad1.right_trigger > 0.02 && gamepad1.left_trigger > 0.02;
-        if (shooting) {
-            if (!wasShooting) align.reset();
+        boolean aiming = gamepad1.dpad_left;
+        if (aiming) {
+            if (!wasAiming) {
+                // pick the point once, when the button goes down, so it can't flip mid-turn
+                Pose p = follower.pose();
+                align.setTarget(FieldConstants.closestHive(alliance, p.x(), p.y()));
+                align.reset();
+            }
             powers = align.aim(follower, powers);
         }
-        wasShooting = shooting;
+        wasAiming = aiming;
 
         follower.manual(powers);
         follower.update();

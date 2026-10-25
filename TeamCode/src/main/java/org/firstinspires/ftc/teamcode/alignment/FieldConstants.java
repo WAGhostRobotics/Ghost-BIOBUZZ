@@ -18,6 +18,13 @@ public class FieldConstants {
         return hiveA ? RED_HIVE_A : RED_HIVE_B;
     }
 
+    // whichever of the alliance's two points is nearer to (x, y)
+    public static Vector2D closestHive(Alliance alliance, double x, double y) {
+        Vector2D a = hive(alliance, true);
+        Vector2D b = hive(alliance, false);
+        return Math.hypot(a.x() - x, a.y() - y) <= Math.hypot(b.x() - x, b.y() - y) ? a : b;
+    }
+
     public static double BLUE_DRIVER_FORWARD = Math.toRadians(180);
     public static double RED_DRIVER_FORWARD  = Math.toRadians(0);
     public static double driverForward(Alliance alliance) {
