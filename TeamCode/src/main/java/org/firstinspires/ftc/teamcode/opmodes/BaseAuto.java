@@ -149,7 +149,10 @@ public abstract class BaseAuto extends OpMode {
     @Override
     public void loop() {
         charlie.follower.update();
+
         charlie.shooter.spinUp();
+        charlie.shooter.shooterUpdate();
+
         Scheduler.execute();
 
         telemetry.addData("X", charlie.follower.pose().x());

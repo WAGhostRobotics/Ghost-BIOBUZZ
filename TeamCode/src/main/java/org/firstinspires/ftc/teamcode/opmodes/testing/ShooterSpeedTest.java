@@ -10,8 +10,8 @@ import org.firstinspires.ftc.teamcode.Robot;
 @TeleOp
 public class ShooterSpeedTest extends OpMode {
 
-    public final double power = 0;
-    public final double hoodpos = 0.2;
+    public static double power = 0;
+    public static double hoodpos = 0.2;
     Robot shooterSpeedTest;
 
     @Override

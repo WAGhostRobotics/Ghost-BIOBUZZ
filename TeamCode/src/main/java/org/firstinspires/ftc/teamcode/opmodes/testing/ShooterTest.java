@@ -11,35 +11,39 @@ import org.firstinspires.ftc.teamcode.subsystems.Shooter;
 @TeleOp
 public class ShooterTest extends OpMode {
 
+    public static double P, I, D, F;
+    public static double hoodPos = 0.20;
+    public static double targetVel = 0;
+    public static double transferSpeed = 0;
+
     Shooter shooter;
     Intake intake;
-    public final double P = 0, I = 0, D = 0, F = 0;
-    public final double hoodPos = 0.2;
-    public final double targetVel = 0;
 
     @Override
     public void init() {
         shooter = new Shooter(hardwareMap);
-        intake = new Intake (hardwareMap);
+        intake = new Intake(hardwareMap);
+        shooter.closeGates();
     }
 
     @Override
     public void loop() {
-
-        intake.setIntakeSpeed(0.8);
-        intake.setTransferSpeed(0.8);
+        boolean feeding = gamepad1.left_trigger_pressed;
+        intake.setTransferSpeed(feeding ? transferSpeed : 0);
+        if (feeding) shooter.openGates();
+        else shooter.closeGates();
+        intake.startIntake();
 
         shooter.setHoodPos(hoodPos);
-
-        shooter.setPIDF(P,I,D,F);
+        shooter.setPIDF(P, I, D, F);
         shooter.setTargetVelocity(targetVel);
         shooter.shooterUpdate();
 
-        telemetry.addData("current velocity: ", shooter.getCurrentVelocity());
-        telemetry.addData("target velocity: ", targetVel);
-        telemetry.addData("error: ", shooter.shooterError);
-        telemetry.addData("power: ", shooter.power);
-        telemetry.addData("hood pos: ", hoodPos);
+        telemetry.addData("current velocity", shooter.getCurrentVelocity());
+        telemetry.addData("target velocity", targetVel);
+        telemetry.addData("error", shooter.shooterError);
+        telemetry.addData("power", shooter.power);
+        telemetry.addData("hood pos", hoodPos);
         telemetry.update();
     }
 }

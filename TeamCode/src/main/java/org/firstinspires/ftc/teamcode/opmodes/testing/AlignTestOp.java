@@ -57,6 +57,8 @@ public class AlignTestOp extends LinearOpMode {
 
             telemetry.addData("Pose", "x %.4f  y %.4f  h %.4f°", p.x(), p.y(), Math.toDegrees(p.heading()));
             telemetry.addData("Target", "%s cell %s", alliance, aimHiveA ? "A" : "B");
+            telemetry.addData("Error to target", align.headingError(f.pose()));
+            telemetry.update();
         }
     }
 }

@@ -6,7 +6,6 @@ import com.arcrobotics.ftclib.gamepad.ToggleButtonReader;
 import com.pedropathing.drivetrain.DrivePowers;
 import com.pedropathing.follower.ManualDrive;
 import com.pedropathing.math.Pose;
-import com.pedropathing.math.Vector2D;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.Robot;
@@ -23,15 +22,16 @@ public abstract class BaseTeleop extends OpMode {
     //vision
     protected int[] tagsA, tagsB;
     private final double FIELD_CENTER_Y = 72.0;
-    protected boolean wasAiming = false;
+    protected boolean wasVisionAiming = false;
+    protected boolean wasOdoAiming = false;
 
     //pid
-    protected AlignPID alignPID;
+    protected AlignPID align;
     protected DrivePowers powers;
 
     //controls
     private boolean polliDown = false;
-    ToggleButtonReader polliButton, headingReset;
+    ToggleButtonReader polliButton, headingReset, aimingButton;
 
     @Override
     public void init() {
@@ -43,8 +43,9 @@ public abstract class BaseTeleop extends OpMode {
 
         polliButton = new ToggleButtonReader(new GamepadEx(gamepad1), GamepadKeys.Button.A);
         headingReset = new ToggleButtonReader(new GamepadEx(gamepad1), GamepadKeys.Button.B);
+        aimingButton = new ToggleButtonReader(new GamepadEx(gamepad1), GamepadKeys.Button.DPAD_LEFT);
 
-        alignPID = new AlignPID(Vector2D.cartesian(0, 0));
+        align = new AlignPID(FieldConstants.hive(alliance, true));
 
         //update from teleop
         charlie.follower.setPose(FieldConstants.endAutoPose);
@@ -53,8 +54,8 @@ public abstract class BaseTeleop extends OpMode {
     protected void handleAlignmentAndShooting() {
         boolean intentToShoot = gamepad1.right_trigger > 0.02 && gamepad1.left_trigger > 0.02;
 
-        if (intentToShoot && !wasAiming) {
-            alignPID.reset();
+        if (intentToShoot && !wasVisionAiming) {
+            align.reset();
         }
 
         if (intentToShoot) {
@@ -79,7 +80,7 @@ public abstract class BaseTeleop extends OpMode {
                 }
 
                 //align explicitly to the side we are on
-                powers = alignPID.autoAim(charlie.follower, powers, alliance, onSideA);
+                powers = align.autoAim(charlie.follower, powers, alliance, onSideA);
 
                 charlie.shooter.openGates();
 
@@ -87,7 +88,7 @@ public abstract class BaseTeleop extends OpMode {
                 //wrong side of field, out of range, or NONE (e.g. not valid tags detected)
                 charlie.shooter.closeGates();
 
-                if (!wasAiming) {
+                if (!wasVisionAiming) {
                     gamepad1.rumble(1.0, 1.0, 500);
                 }
             }
@@ -95,18 +96,41 @@ public abstract class BaseTeleop extends OpMode {
             charlie.shooter.closeGates();
         }
 
-        wasAiming = intentToShoot;
+        wasVisionAiming = intentToShoot;
     }
 
     @Override
     public void loop() {
+        charlie.shooter.spinUp();
+        charlie.shooter.shooterUpdate();
+
         //base translation
-        powers = ManualDrive.fieldCentric(
-                -gamepad1.left_stick_x,
-                gamepad1.left_stick_y,
-                -gamepad1.right_stick_x,
-                charlie.follower.pose().heading()
-        );
+        DrivePowers robotRel = new DrivePowers(-gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x);
+        powers = ManualDrive.fieldCentric(robotRel, charlie.follower.pose().heading(), -FieldConstants.driverForward(alliance));
+
+        //auto align
+        boolean aimingPressed = aimingButton.isDown();
+        if (aimingPressed) {
+            if (!wasOdoAiming) {
+                //pick the point once, when the button goes down, so it can't flip mid-turn
+                Pose p = charlie.follower.pose();
+                align.setTarget(FieldConstants.closestHive(alliance, p.x(), p.y()));
+                align.reset();
+            }
+            powers = align.aim(charlie.follower, powers);
+        }
+        wasOdoAiming = aimingPressed;
+
+        // relocalise button
+        if (headingReset.wasJustPressed()) {
+            charlie.follower.setPose(FieldConstants.RELOCALIZE_POSE);
+        }
+
+        Pose robotPose = charlie.follower.pose();
+
+        headingReset.readValue();
+        polliButton.readValue();
+        aimingButton.readValue();
 
         if (Robot.visionEnabled) {
             //update based on camera vision
@@ -118,7 +142,7 @@ public abstract class BaseTeleop extends OpMode {
         charlie.follower.update();
 
         //intake
-        if (gamepad1.left_trigger > 0.02) charlie.intake.startIntake();
+        if (gamepad1.left_trigger    > 0.02) charlie.intake.startIntake();
         else charlie.intake.idleIntake();
 
         //transfer
@@ -134,9 +158,19 @@ public abstract class BaseTeleop extends OpMode {
         }
 
         //shooter
-        if (gamepad1.right_trigger > 0.02 && gamepad1.left_trigger > 0.02) { charlie.shooter.openGates(); }
-        else { charlie.shooter.closeGates(); }
+        if (!Robot.visionEnabled) {
+            if (gamepad1.right_trigger > 0.02 && gamepad1.left_trigger > 0.02) charlie.shooter.openGates();
+            else charlie.shooter.closeGates();
+        }
 
-        charlie.shooter.spinUp();
+        telemetry.addData("current velocity", charlie.shooter.getCurrentVelocity());
+        telemetry.addData("target velocity", charlie.shooter.targetVelocity);
+        telemetry.addData("error", charlie.shooter.shooterError);
+        telemetry.addData("power", charlie.shooter.power);
+        telemetry.addData("hood pos", charlie.shooter.getHoodPos());
+        telemetry.addData("Robot X", robotPose.x());
+        telemetry.addData("Robot Y", robotPose.y());
+        telemetry.addData("Robot Heading", Math.toDegrees(robotPose.heading()));
+        telemetry.update();
     }
 }
