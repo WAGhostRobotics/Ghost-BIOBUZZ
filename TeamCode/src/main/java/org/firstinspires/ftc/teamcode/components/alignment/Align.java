@@ -39,11 +39,12 @@ public class Align {
         }
     }
 
-    public void setTargetHeading() {
-        targetHeading = AngleUnit.normalizeDegrees(Math.toDegrees(Math.atan2(targetHive.y(), targetHive.x())));
+    public void setTargetHeading(Pose robot) {
+        targetHeading = Math.atan2(targetHive.y() - robot.y(),
+                targetHive.x() - robot.x());   // radians
     }
 
     public void head2Target() {
-        follower.setHeading(Math.toRadians(targetHeading));
+        follower.setHeading(targetHeading);
     }
 }
