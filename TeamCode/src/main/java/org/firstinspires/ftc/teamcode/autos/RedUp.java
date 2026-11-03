@@ -4,7 +4,6 @@ import static org.firstinspires.ftc.teamcode.core.Charlie.follower;
 import static org.firstinspires.ftc.teamcode.core.Charlie.intake;
 import static org.firstinspires.ftc.teamcode.core.Charlie.shooter;
 
-import static com.pedropathing.api.Paths.*;
 import static com.pedropathing.ivy.Scheduler.schedule;
 import static com.pedropathing.ivy.commands.Commands.instant;
 import static com.pedropathing.ivy.commands.Commands.waitMs;

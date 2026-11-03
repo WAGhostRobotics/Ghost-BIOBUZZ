@@ -1,9 +1,14 @@
 package org.firstinspires.ftc.teamcode.autos;
 
 import static com.pedropathing.ivy.Scheduler.schedule;
+import static com.pedropathing.ivy.commands.Commands.instant;
+import static com.pedropathing.ivy.commands.Commands.waitMs;
+import static com.pedropathing.ivy.groups.Groups.parallel;
 import static com.pedropathing.ivy.groups.Groups.sequential;
 import static com.pedropathing.ivy.pedro.PedroCommands.follow;
 import static org.firstinspires.ftc.teamcode.core.Charlie.follower;
+import static org.firstinspires.ftc.teamcode.core.Charlie.intake;
+import static org.firstinspires.ftc.teamcode.core.Charlie.shooter;
 
 import com.pedropathing.api.Paths;
 import com.pedropathing.api.PoseFactory;
@@ -62,14 +67,57 @@ public class RedUp_Interference extends OpMode {
         return Paths.line(point6, point7).constant(point7);
     }
 
+    Command spinUp = waitMs(1000);
+    Command shootTime = waitMs(1000);
+    Command gardenTime = waitMs(3000);
+
+    Command openGate = instant(() -> shooter.openGates());
+    Command closeGate = instant(() -> shooter.closeGates());
+
+    Command intakeOn = instant(() -> intake.setIntakeSpeed(0.8));
+
+    Command intakeOff = instant(() -> intake.setIntakeSpeed(0.2));
+    Command transferOn = instant(() -> intake.setTransferSpeed(0.5));
+    Command transferOff = instant(() -> intake.setTransferSpeed(0));
+
+    private Command shootBalls() {
+        return parallel(
+                transferOn,
+                intakeOn,
+                shootTime,
+                openGate
+        );
+    }
+
+    private Command stopShootBalls() {
+        return parallel(
+                transferOff,
+                intakeOff,
+                closeGate
+        );
+    }
+
+
+
+    private Command intakeGardenCommand() {
+        return parallel(
+                follow(follower, path2()),
+                intakeOn,
+                gardenTime
+        );
+    }
+
     private Command autoRoutine() {
         return sequential(
+                spinUp,
                 follow(follower, path1()),
-                //shoot
-                follow(follower, path2()),
-                // garden
+                shootBalls(),
+                stopShootBalls(),
+                intakeGardenCommand(),
+                intakeOff,
                 follow(follower, path3()),
-                // shoot
+                shootBalls(),
+                stopShootBalls(),
                 follow(follower, path4()),
                 follow(follower, path5()),
                 // flower

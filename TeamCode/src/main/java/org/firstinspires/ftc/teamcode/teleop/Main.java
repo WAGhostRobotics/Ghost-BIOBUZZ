@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
+import static org.firstinspires.ftc.teamcode.core.Charlie.alignRobot;
 import static org.firstinspires.ftc.teamcode.core.Charlie.follower;
 import static org.firstinspires.ftc.teamcode.core.Charlie.intake;
 import static org.firstinspires.ftc.teamcode.core.Charlie.shooter;
@@ -14,8 +15,6 @@ import com.pedropathing.math.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.alignment.AlignPID;
-import org.firstinspires.ftc.teamcode.alignment.FieldConstants;
 import org.firstinspires.ftc.teamcode.core.Charlie;
 
 @TeleOp
@@ -23,23 +22,16 @@ import org.firstinspires.ftc.teamcode.core.Charlie;
 public class Main extends OpMode {
 
     double hoodpos = 0.25;
-
-    public static boolean blue = false;
     double targetVelocity = 1360;
     double P = 0.0055 , I=0.0006 , D=0, F=0.009;
-
-    boolean polliDown = false;
-
-    ToggleButtonReader polliButton, headingReset, autoHeading;
-
-    public static Pose startPose;
-
-    AlignPID align;
-    FieldConstants.Alliance alliance;
-    boolean wasAiming = false;
+    ToggleButtonReader headingReset, autoHeading;
 
     @Override
     public void init() {
+
+        telemetry.addLine("init started");
+        telemetry.update();
+
         Charlie.init(hardwareMap);
 
         shooter.closeGates();
@@ -49,48 +41,50 @@ public class Main extends OpMode {
 
         intake.setPolliUp();
 
-        polliButton = new ToggleButtonReader(new GamepadEx(gamepad1), GamepadKeys.Button.A);
         headingReset = new ToggleButtonReader(new GamepadEx(gamepad1), GamepadKeys.Button.B);
         autoHeading = new ToggleButtonReader(new GamepadEx(gamepad1), GamepadKeys.Button.DPAD_LEFT);
 
-        alliance = blue ? FieldConstants.Alliance.BLUE : FieldConstants.Alliance.RED;
-        align = new AlignPID(FieldConstants.hive(alliance, true));
+        telemetry.addLine("init done");
+        telemetry.update();
 
     }
 
     @Override
     public void loop() {
+        DrivePowers powers = ManualDrive.fieldCentric(
+                -gamepad1.left_stick_y,
+                gamepad1.left_stick_x,
+                -gamepad1.right_stick_x,
+                follower.pose().heading()
+        );
+
+        ManualDrive.driveOrHold(follower, powers);
 
 
+        // auto heading
 
-        DrivePowers robotRel = new DrivePowers(-gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x);
-        DrivePowers powers = ManualDrive.fieldCentric(robotRel, follower.pose().heading(), -FieldConstants.driverForward(alliance));
-
-        boolean aiming = gamepad1.dpad_left;
-        if (aiming) {
-            if (!wasAiming) {
-                // pick the point once, when the button goes down, so it can't flip mid-turn
-                Pose p = follower.pose();
-                align.setTarget(FieldConstants.closestHive(alliance, p.x(), p.y()));
-                align.reset();
-            }
-            powers = align.aim(follower, powers);
+        /**
+        if(gamepad1.right_trigger > 0.02 && gamepad1.left_trigger > 0.02) {
+            gamepad1.right_stick_x = 0;
+            alignRobot.setTargetHive(follower.pose().y());
+            alignRobot.setTargetHeading();
+            alignRobot.head2Target();
         }
-        wasAiming = aiming;
-
-        follower.manual(powers);
-        follower.update();
 
 
         // relocalise button
         if (headingReset.wasJustPressed()) {
-            Pose cornerPose = new Pose(8.270, 8.224, Math.toRadians(90));
+            Pose cornerPose = new Pose(7.75, 8.21, Math.toRadians(90));
             follower.setPose(cornerPose);
         }
 
-        Pose robotPose = follower.pose();
-
         headingReset.readValue();
+         */
+
+        follower.update();
+        Pose robotPose = follower.pose(); // returns a Pose object
+
+        // DRIVETRAIN STUFF IS OVER
 
         if(gamepad1.left_trigger > 0.02) {
             intake.setIntakeSpeed(0.8);
@@ -110,18 +104,12 @@ public class Main extends OpMode {
             shooter.closeGates();
         }
 
-        if (polliButton.wasJustPressed()) {
-            if(polliDown) {
-                intake.setPolliUp();
-            }
-            else {
-                intake.setPolliDown();
-            }
-
-            polliDown = !polliDown;
+        if (gamepad1.left_bumper) {
+            intake.setPolliDown();
         }
-
-        polliButton.readValue();
+        else {
+            intake.setPolliUp();
+        }
 
         shooter.setPIDF(P,I,D,F);
         shooter.setTargetVelocity(targetVelocity);
@@ -136,6 +124,5 @@ public class Main extends OpMode {
         telemetry.addData("Robot Y", robotPose.y());
         telemetry.addData("Robot Heading", Math.toDegrees(robotPose.heading()));
         telemetry.update();
-
     }
 }

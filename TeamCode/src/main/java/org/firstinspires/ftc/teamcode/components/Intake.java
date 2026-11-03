@@ -10,7 +10,7 @@ public class Intake {
 
     DcMotor intake, transfer;
     Servo polliRoller;
-    public double polliUp = .7, polliDown = .31;
+    public double polliUp = .73, polliDown = .32;
 
     public Intake(HardwareMap h) {
         intake = h.get(DcMotorEx.class, "intake");

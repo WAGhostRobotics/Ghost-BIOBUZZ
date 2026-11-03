@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.components.Intake;
 import org.firstinspires.ftc.teamcode.components.Shooter;
+import org.firstinspires.ftc.teamcode.components.alignment.Align;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 public class Charlie {
@@ -13,6 +14,8 @@ public class Charlie {
     public static Shooter shooter;
     public static Follower follower;
 
+    public static Align alignRobot;
+
 
     public static void init(HardwareMap hardwareMap) {
 
@@ -20,5 +23,7 @@ public class Charlie {
 
         intake = new Intake(hardwareMap);
         shooter = new Shooter(hardwareMap);
+
+        alignRobot = new Align(false,hardwareMap);
     }
 }
