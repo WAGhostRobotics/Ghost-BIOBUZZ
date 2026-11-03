@@ -21,6 +21,8 @@ import org.firstinspires.ftc.teamcode.core.Charlie;
 @Config
 public class Main extends OpMode {
 
+
+    Pose cornerPose = new Pose(7.75, 8.21, Math.toRadians(90));
     double hoodpos = 0.25;
     double targetVelocity = 1360;
     double P = 0.0055 , I=0.0006 , D=0, F=0.009;
@@ -28,9 +30,6 @@ public class Main extends OpMode {
 
     @Override
     public void init() {
-
-        telemetry.addLine("init started");
-        telemetry.update();
 
         Charlie.init(hardwareMap);
 
@@ -44,8 +43,8 @@ public class Main extends OpMode {
         headingReset = new ToggleButtonReader(new GamepadEx(gamepad1), GamepadKeys.Button.B);
         autoHeading = new ToggleButtonReader(new GamepadEx(gamepad1), GamepadKeys.Button.DPAD_LEFT);
 
-        telemetry.addLine("init done");
-        telemetry.update();
+        follower.setPose(cornerPose);
+        follower.update();
 
     }
 
@@ -63,7 +62,6 @@ public class Main extends OpMode {
 
         // auto heading
 
-        /**
         if(gamepad1.right_trigger > 0.02 && gamepad1.left_trigger > 0.02) {
             gamepad1.right_stick_x = 0;
             alignRobot.setTargetHive(follower.pose().y());
@@ -74,12 +72,10 @@ public class Main extends OpMode {
 
         // relocalise button
         if (headingReset.wasJustPressed()) {
-            Pose cornerPose = new Pose(7.75, 8.21, Math.toRadians(90));
             follower.setPose(cornerPose);
         }
 
         headingReset.readValue();
-         */
 
         follower.update();
         Pose robotPose = follower.pose(); // returns a Pose object

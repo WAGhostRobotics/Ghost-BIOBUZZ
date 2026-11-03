@@ -22,14 +22,13 @@ public class Align {
 
     double targetHeading;
     public Align(boolean blue, HardwareMap hwmap) {
-        if(!blue){
+        if (!blue) {
             HIVE_A = RED_HIVE_A;
             HIVE_B = RED_HIVE_B;
+        } else {
+            HIVE_A = BLUE_HIVE_A;
+            HIVE_B = BLUE_HIVE_B;
         }
-        HIVE_A = BLUE_HIVE_A;
-        HIVE_B = BLUE_HIVE_B;
-
-        Charlie.init(hwmap);
     }
 
     public void setTargetHive(double robot_y) {
@@ -41,10 +40,10 @@ public class Align {
     }
 
     public void setTargetHeading() {
-        targetHeading = AngleUnit.normalizeDegrees(Math.atan2(targetHive.y(), targetHive.x()));
+        targetHeading = AngleUnit.normalizeDegrees(Math.toDegrees(Math.atan2(targetHive.y(), targetHive.x())));
     }
 
     public void head2Target() {
-        follower.setHeading(targetHeading);
+        follower.setHeading(Math.toRadians(targetHeading));
     }
 }
