@@ -15,6 +15,7 @@ import com.pedropathing.math.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.components.alignment.Align;
 import org.firstinspires.ftc.teamcode.core.Charlie;
 
 @TeleOp
@@ -55,24 +56,23 @@ public class Main extends OpMode {
 
         aligning = gamepad1.right_trigger > 0.02 && gamepad1.left_trigger > 0.02;
 
-
         DrivePowers powers = ManualDrive.fieldCentric(
                 -gamepad1.left_stick_y,
                 -gamepad1.left_stick_x,
-                aligning ? 0 : -gamepad1.right_stick_x,   // stick turn ignored while aligning
+                -gamepad1.right_stick_x,
+//                aligning ? 0 : -gamepad1.right_stick_x, // stick turn ignored while aligning
                 follower.pose().heading()
         );
 
-        if (aligning) {
-            alignRobot.setTargetHive(follower.pose().y());
-            alignRobot.setTargetHeading(follower.pose());
-            alignRobot.head2Target();
-        }
+//        if (aligning) {
+//            alignRobot.setTargetHive(follower.pose().y());
+//            alignRobot.setTargetHeading();
+//            follower.setHeading(alignRobot.getTargetHeading());
+//        }
 
-        ManualDrive.driveOrHold(follower, powers);
+        follower.manual(powers);
 
-
-        // relocalise button
+        // relocalise button -- goes to some random position everytime but when done in init, it does what I want it to do
         if (headingReset.wasJustPressed()) {
             follower.setPose(cornerPose);
         }
@@ -102,6 +102,28 @@ public class Main extends OpMode {
             shooter.closeGates();
         }
 
+        /// FOR CUBSCOUTS
+
+        if(gamepad2.left_trigger > 0.02) {
+            intake.setIntakeSpeed(0.8);
+        } else {
+            intake.setIntakeSpeed(0.3);
+        }
+
+        if (gamepad2.right_trigger > 0.2) {
+            intake.setTransferSpeed(0.6);
+        } else {
+            intake.setTransferSpeed(0);
+        }
+
+        if(gamepad2.right_trigger > 0.02 && gamepad2.left_trigger > 0.02) {
+            shooter.openGates();
+        } else {
+            shooter.closeGates();
+        }
+
+
+
         if (gamepad1.left_bumper) {
             intake.setPolliDown();
         }
@@ -121,6 +143,8 @@ public class Main extends OpMode {
         telemetry.addData("Robot X", robotPose.x());
         telemetry.addData("Robot Y", robotPose.y());
         telemetry.addData("Robot Heading", Math.toDegrees(robotPose.heading()));
+        telemetry.addData("target heading", alignRobot.getTargetHeading());
+        telemetry.addData("heading error", alignRobot.getHeadingError());
         telemetry.update();
     }
 }

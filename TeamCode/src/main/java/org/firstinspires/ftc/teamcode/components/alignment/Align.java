@@ -20,7 +20,7 @@ public class Align {
 
     Pose HIVE_A, HIVE_B, targetHive;
 
-    double targetHeading;
+    double targetHeading, headingError;
     public Align(boolean blue, HardwareMap hwmap) {
         if (!blue) {
             HIVE_A = RED_HIVE_A;
@@ -39,12 +39,16 @@ public class Align {
         }
     }
 
-    public void setTargetHeading(Pose robot) {
-        targetHeading = Math.atan2(targetHive.y() - robot.y(),
-                targetHive.x() - robot.x());   // radians
+    public void setTargetHeading() {
+        targetHeading = Math.atan2(targetHive.y() - follower.pose().y(),
+                                   targetHive.x() - follower.pose().x());   // radians
     }
 
-    public void head2Target() {
-        follower.setHeading(targetHeading);
+    public double getTargetHeading() {
+        return targetHeading;
+    }
+
+    public double getHeadingError() {
+        return targetHeading - follower.pose().heading();
     }
 }
