@@ -27,6 +27,67 @@ public class UndershooterTest extends OpMode {
     @Override
     public void loop() {
 
+        if(gamepad1.a) {
+            if(gamepad1.dpad_up) {
+                P = P + 0.001;
+            }
+            else if(gamepad1.dpad_down) {
+                P-= 0.001;
+            }
+        }
+
+        if(gamepad1.b) {
+            if(gamepad1.dpad_up) {
+                I = I + 0.001;
+            }
+            else if(gamepad1.dpad_down) {
+                I-= 0.001;
+            }
+        }
+
+        if(gamepad1.x) {
+            if(gamepad1.dpad_up) {
+                D = D + 0.001;
+            }
+            else if(gamepad1.dpad_down) {
+                D-= 0.001;
+            }
+        }
+
+        if(gamepad1.y) {
+            if(gamepad1.dpad_up) {
+                F = F + 0.001;
+            }
+            else if(gamepad1.dpad_down) {
+                F-= 0.001;
+            }
+        }
+
+        if(gamepad1.right_bumper) {
+            if(gamepad1.dpad_up) {
+                transferSpeed+= 0.01;
+            }
+            else if(gamepad1.dpad_down) {
+                transferSpeed-= 0.01;
+            }
+        }
+
+        if(gamepad1.left_bumper ) {
+            if(gamepad1.dpad_up) {
+                intakeSpeed+= 0.01;
+            }
+            else if(gamepad1.dpad_down) {
+                intakeSpeed-= 0.01;
+            }
+        }
+
+        if (gamepad1.dpad_right) {
+            targetVel += 100;
+        }
+        else if(gamepad1.dpad_left) {
+            targetVel -= 100;
+        }
+
         us.setTransferSpeed(transferSpeed);
         us.setIntakeSpeed(intakeSpeed);
 
@@ -38,6 +99,10 @@ public class UndershooterTest extends OpMode {
         telemetry.addData("target velocity: ", targetVel);
         telemetry.addData("error: ", targetVel- us.getCurrentVelocity());
         telemetry.addData("power: ", us.power);
+        telemetry.addData("P: ", P);
+        telemetry.addData("I: ", I);
+        telemetry.addData("D: ", D);
+        telemetry.addData("F: ", F);
         telemetry.update();
     }
 }
