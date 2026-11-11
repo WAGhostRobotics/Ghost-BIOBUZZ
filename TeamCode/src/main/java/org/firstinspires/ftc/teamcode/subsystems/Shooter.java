@@ -13,6 +13,7 @@ public class Shooter {
 
     DcMotorEx shooterL, shooterR;
     Servo gateL, gateR, hood;
+<<<<<<< HEAD:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/subsystems/Shooter.java
 
     private static final double SHOOT_POWER = 1360;
     private static final double IDLE_HOOD_POS = 0.25;
@@ -20,6 +21,12 @@ public class Shooter {
     double P = 0.0055 , I = 0.0006 , D = 0, F = 0.009;
     public double currentVelocity;
     public double targetVelocity;
+=======
+    double openGateL = .5, openGateR = 0.5, closeGateL = 0.34, closeGateR = 0.75;
+    double P = 0.0055 , I=0.0006 , D=0, F=0.009;
+    double currentVelocity;
+    double targetVelocity;
+>>>>>>> origin/master:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/components/Shooter.java
     public double shooterError;
     public double power;
     PIDFController shooterPID;
@@ -67,6 +74,7 @@ public class Shooter {
         shooterPID.setPIDF(P,I,D,F);
     }
 
+<<<<<<< HEAD:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/subsystems/Shooter.java
     public double getCurrentVelocity(){ return shooterR.getVelocity(); }
     public void setTargetVelocity(double tarV) { targetVelocity = tarV; }
 
@@ -74,6 +82,18 @@ public class Shooter {
 
     public void shooterUpdate(){
         currentVelocity = getCurrentVelocity();
+=======
+    public double getCurrentVelocity(){
+
+        return shooterR.getVelocity();
+    }
+    public void setTargetVelocity(double tarV) {
+        targetVelocity = tarV;
+    }
+
+    public void shooterUpdate(){
+        currentVelocity = shooterR.getVelocity();
+>>>>>>> origin/master:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/components/Shooter.java
         shooterError = targetVelocity - currentVelocity;
 
         power = shooterPID.calculate(0,shooterError);
@@ -89,9 +109,16 @@ public class Shooter {
         shooterR.setPower(power);
     }
 
+<<<<<<< HEAD:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/subsystems/Shooter.java
     public void setHoodPos(double pos) { hood.setPosition(pos); }
 
     public void spinUp() { setTargetVelocity(SHOOT_POWER); }
     public void stopShooter() { setShooterPower(0); }
     public void setIdleHood() { hood.setPosition(IDLE_HOOD_POS); }
+=======
+    public void setHoodPos(double pos) {
+        hood.setPosition(pos);
+    }
+    public double getHoodPos() {return hood.getPosition();}
+>>>>>>> origin/master:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/components/Shooter.java
 }
