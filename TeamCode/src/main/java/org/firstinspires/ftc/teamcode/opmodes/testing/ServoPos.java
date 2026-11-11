@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.testing;
+package org.firstinspires.ftc.teamcode.opmodes.testing;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -11,14 +11,13 @@ public class ServoPos extends OpMode {
 
     Servo s;
 
-    public static double servoPos;
+    public double servoPos;
 
     @Override
     public void init() {
 
         s = hardwareMap.get(Servo.class, "s");
         servoPos = 0.5;
-
     }
 
     @Override

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.components;
+package org.firstinspires.ftc.teamcode.subsystems;
 
 
 import com.arcrobotics.ftclib.controller.PIDFController;
@@ -9,16 +9,24 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-
 public class Shooter {
 
     DcMotorEx shooterL, shooterR;
     Servo gateL, gateR, hood;
+<<<<<<< HEAD:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/subsystems/Shooter.java
+
+    private static final double SHOOT_POWER = 1360;
+    private static final double IDLE_HOOD_POS = 0.25;
+    double OPEN_GATE_L = .5, OPEN_GATE_R = 0.5, CLOSE_GATE_L = 0.34, CLOSE_GATE_R = 0.75;
+    double P = 0.0055 , I = 0.0006 , D = 0, F = 0.009;
+    public double currentVelocity;
+    public double targetVelocity;
+=======
     double openGateL = .5, openGateR = 0.5, closeGateL = 0.34, closeGateR = 0.75;
     double P = 0.0055 , I=0.0006 , D=0, F=0.009;
     double currentVelocity;
     double targetVelocity;
+>>>>>>> origin/master:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/components/Shooter.java
     public double shooterError;
     public double power;
     PIDFController shooterPID;
@@ -48,13 +56,13 @@ public class Shooter {
     }
 
     public void openGates() {
-        gateL.setPosition(openGateL);
-        gateR.setPosition(openGateR);
+        gateL.setPosition(OPEN_GATE_L);
+        gateR.setPosition(OPEN_GATE_R);
     }
 
     public void closeGates() {
-        gateL.setPosition(closeGateL);
-        gateR.setPosition(closeGateR);
+        gateL.setPosition(CLOSE_GATE_L);
+        gateR.setPosition(CLOSE_GATE_R);
     }
 
     public void setPIDF(double kP, double kI, double kD, double kF){
@@ -66,6 +74,15 @@ public class Shooter {
         shooterPID.setPIDF(P,I,D,F);
     }
 
+<<<<<<< HEAD:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/subsystems/Shooter.java
+    public double getCurrentVelocity(){ return shooterR.getVelocity(); }
+    public void setTargetVelocity(double tarV) { targetVelocity = tarV; }
+
+    public double getHoodPos() { return hood.getPosition(); }
+
+    public void shooterUpdate(){
+        currentVelocity = getCurrentVelocity();
+=======
     public double getCurrentVelocity(){
 
         return shooterR.getVelocity();
@@ -76,6 +93,7 @@ public class Shooter {
 
     public void shooterUpdate(){
         currentVelocity = shooterR.getVelocity();
+>>>>>>> origin/master:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/components/Shooter.java
         shooterError = targetVelocity - currentVelocity;
 
         power = shooterPID.calculate(0,shooterError);
@@ -91,8 +109,16 @@ public class Shooter {
         shooterR.setPower(power);
     }
 
+<<<<<<< HEAD:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/subsystems/Shooter.java
+    public void setHoodPos(double pos) { hood.setPosition(pos); }
+
+    public void spinUp() { setTargetVelocity(SHOOT_POWER); }
+    public void stopShooter() { setShooterPower(0); }
+    public void setIdleHood() { hood.setPosition(IDLE_HOOD_POS); }
+=======
     public void setHoodPos(double pos) {
         hood.setPosition(pos);
     }
     public double getHoodPos() {return hood.getPosition();}
+>>>>>>> origin/master:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/components/Shooter.java
 }
